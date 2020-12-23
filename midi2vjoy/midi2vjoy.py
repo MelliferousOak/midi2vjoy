@@ -51,7 +51,10 @@ def midi_test():
 		print('Device opened for testing. Use ctrl-c to quit.')
 		while True:
 			while m.poll():
-				print(m.read(1))
+				ipt = m.read(1)
+				key = tuple(ipt[0][0][0:2])
+				if key[0] != 248:
+					print(key)
 			time.sleep(0.1)
 	except:
 		m.close()
@@ -65,13 +68,14 @@ def read_conf(conf_file):
 			if len(l.strip()) == 0 or l[0] == '#':
 				continue
 			fs = l.split()
-			key = (int(fs[0]), int(fs[1]))
-			if fs[0] == '144':
-				val = (int(fs[2]), int(fs[3]))
+			# Allow user to specify whether an input is a button or axis
+			key = (int(fs[1]), int(fs[2]))
+			if fs[0].lower() == 'a':
+				val = ('a', int(fs[3]), fs[4])
 			else:
-				val = (int(fs[2]), fs[3])
+				val = ('b', int(fs[3]), int(fs[4]))
 			table[key] = val
-			vid = int(fs[2])
+			vid = int(fs[3])
 			if not vid in vids:
 				vids.append(vid)
 	return (table, vids)
@@ -137,26 +141,24 @@ def joystick_run():
 				key = tuple(ipt[0][0][0:2])
 				reading = ipt[0][0][2]
 				# Check that the input is defined in table
-				print(key, reading)
+				# print(key, reading)
 				if not key in table:
 					continue
 				opt = table[key]
 				if options.verbose:
 					print(key, '->', opt, reading)
-				if key[0] == 176:
+				if opt[0] == 'a':
 					# A slider input
 					# Check that the output axis is valid
 					# Note: We did not check if that axis is defined in vJoy
-					if not opt[1] in axis:
+					# Note: We are not calibrating for full use of axis
+					if not opt[2] in axis:
 						continue
 					reading = (reading + 1) << 8
-					vjoy.SetAxis(reading, opt[0], axis[opt[1]])
-				elif key[0] == 144:
+					vjoy.SetAxis(reading, opt[1], axis[opt[2]])
+				else:
 					# A button input
-					vjoy.SetBtn(reading, opt[0], int(opt[1]))
-				elif key[0] == 128:
-					# A button off input
-					vjoy.SetBtn(reading, opt[0], int(opt[1]))
+					vjoy.SetBtn(reading, opt[1], int(opt[2]))
 			time.sleep(0.1)
 	except:
 		#traceback.print_exc()
