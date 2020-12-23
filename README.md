@@ -64,7 +64,7 @@ Below the my mapping configuration file for Xsession-Pro.
 ```
 # Midi to vJoy translation
 # The format is one line for each control in the format of
-#       o_type, m_type, m_control, v_id, v_number
+#       o_type, m_type, m_control, v_id, v_number, (v_mult)
 # o_type is the output type: axis or button
 # m_type is the MIDI message status e.g., 176 (slider), 144 (channel 0 note on), 128 (channel 0 note off) etc.
 # m_control is the ID of the midi message e.g., 60 is C3 when referring to a note.
@@ -73,13 +73,14 @@ Below the my mapping configuration file for Xsession-Pro.
 # and watch the messages showing up on the screen.
 # v_id is the vJoystick ID where the MIDI message is translated to.
 # v_number is the axis or button number MIDI message is contolling.
+# v_mult is only needed for axes, and is a multiplier for the velocity, to allow us to saturate the axis input without having to play at full volume for every input
 # The axis may be 'X', 'Y', 'Z', 'RX', 'RY', 'RZ', 'SL0', or 'SL1'.
 
-A 176	12	1	Z
-A 176	11	1	RX
-A 176	14	1	RY
-A 176	15	1	RZ
-A 176	17	1	SL0
+A 176	12	1	Z	1.0
+A 176	11	1	RX	1.0
+A 176	14	1	RY	1.0
+A 176	15	1	RZ	1.0
+A 176	17	1	SL0	1.0
 B 144	46	1	1
 B 144	43	1	2
 B 144	70	1	3
@@ -89,20 +90,20 @@ B 144	57	1	6
 B 144	69	1	7
 B 144	59	1	8
 
-A 176	24	2	Z
-A 176	25	2	SL0
-A 176	26	2	SL1
-A 176	27	2	RX
-A 176	28	2	RY
-A 176	29	2	RZ
+A 176	24	2	Z	1.0
+A 176	25	2	SL0	1.0
+A 176	26	2	SL1	1.0
+A 176	27	2	RX	1.0
+A 176	28	2	RY	1.0
+A 176	29	2	RZ	1.0
 B 144	44	2	1
 
-A 176	31	3	Z
-A 176	32	3	SL0
-A 176	33	3	SL1
-A 176	34	3	RX
-A 176	35	3	RY
-A 176	36	3	RZ
+A 176	31	3	Z	1.0
+A 176	32	3	SL0	1.0
+A 176	33	3	SL1	1.0
+A 176	34	3	RX	1.0
+A 176	35	3	RY	1.0
+A 176	36	3	RZ	1.0
 B 144	45	3	1
 
 ```

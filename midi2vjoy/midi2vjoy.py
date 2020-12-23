@@ -71,7 +71,7 @@ def read_conf(conf_file):
 			# Allow user to specify whether an input is a button or axis
 			key = (int(fs[1]), int(fs[2]))
 			if fs[0].lower() == 'a':
-				val = ('a', int(fs[3]), fs[4])
+				val = ('a', int(fs[3]), fs[4], float(fs[5]))
 			else:
 				val = ('b', int(fs[3]), int(fs[4]))
 			table[key] = val
@@ -89,7 +89,7 @@ def joystick_run():
 		if options.verbose:
 			print('Opening configuration file:', options.conf)
 		(table, vids) = read_conf(options.conf)
-		#print(table)
+		print(table)
 		#print(vids)
 	except:
 		print('Error processing the configuration file:', options.conf)
@@ -154,7 +154,8 @@ def joystick_run():
 					# Note: We are not calibrating for full use of axis
 					if not opt[2] in axis:
 						continue
-					reading = (reading + 1) << 8
+					reading = (int(float(reading) * opt[3] + 1.0)) << 8
+					print (reading, opt[3])
 					vjoy.SetAxis(reading, opt[1], axis[opt[2]])
 				else:
 					# A button input
