@@ -53,7 +53,8 @@ The mapping configuration file is a simple text file. All lines starts with "#" 
 
 Each mapping line has four numbers. This correspond to mapping an axis or button from MIDI to the corresponding control on the virtual joysticks. The first two numbers are those you recorded in the midi test step above.
 
-- m_type: This is 176 for axis and 144 for buttons;
+- o_type: This is a for axis and b for buttons;
+- m_type: This is the message status (the first number you recorded in the testing session for each control);
 - m_control: This is the index (the second number you recorded in the testing session for each control);
 - v_id: The ID of the vJoy device (1, 2, 3, etc.);
 - v_number: The axis name or button number on the vJoy device ("Z" for Z axis, and 3 for Button3).
@@ -63,9 +64,10 @@ Below the my mapping configuration file for Xsession-Pro.
 ```
 # Midi to vJoy translation
 # The format is one line for each control in the format of
-#       m_type, m_control, v_id, v_number
-# m_type is the 176 (slider) or 144 (button).
-# m_control is the ID of the midi message.
+#       o_type, m_type, m_control, v_id, v_number
+# o_type is the output type: axis or button
+# m_type is the MIDI message status e.g., 176 (slider), 144 (channel 0 note on), 128 (channel 0 note off) etc.
+# m_control is the ID of the midi message e.g., 60 is C3 when referring to a note.
 # The m_type and m_control value of each MIDI input can be found
 # when running the program in test mode. Just push/move the control
 # and watch the messages showing up on the screen.
@@ -73,35 +75,35 @@ Below the my mapping configuration file for Xsession-Pro.
 # v_number is the axis or button number MIDI message is contolling.
 # The axis may be 'X', 'Y', 'Z', 'RX', 'RY', 'RZ', 'SL0', or 'SL1'.
 
-176	12	1	Z
-176	11	1	RX
-176	14	1	RY
-176	15	1	RZ
-176	17	1	SL0
-144	46	1	1
-144	43	1	2
-144	70	1	3
-144	58	1	4
-144	56	1	5
-144	57	1	6
-144	69	1	7
-144	59	1	8
+A 176	12	1	Z
+A 176	11	1	RX
+A 176	14	1	RY
+A 176	15	1	RZ
+A 176	17	1	SL0
+B 144	46	1	1
+B 144	43	1	2
+B 144	70	1	3
+B 144	58	1	4
+B 144	56	1	5
+B 144	57	1	6
+B 144	69	1	7
+B 144	59	1	8
 
-176	24	2	Z
-176	25	2	SL0
-176	26	2	SL1
-176	27	2	RX
-176	28	2	RY
-176	29	2	RZ
-144	44	2	1
+A 176	24	2	Z
+A 176	25	2	SL0
+A 176	26	2	SL1
+A 176	27	2	RX
+A 176	28	2	RY
+A 176	29	2	RZ
+B 144	44	2	1
 
-176	31	3	Z
-176	32	3	SL0
-176	33	3	SL1
-176	34	3	RX
-176	35	3	RY
-176	36	3	RZ
-144	45	3	1
+A 176	31	3	Z
+A 176	32	3	SL0
+A 176	33	3	SL1
+A 176	34	3	RX
+A 176	35	3	RY
+A 176	36	3	RZ
+B 144	45	3	1
 
 ```
 
